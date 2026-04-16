@@ -93,7 +93,7 @@
     </div>
 
     <!-- Extra Profit Summary -->
-    <div class="bg-gradient-to-r from-emerald-100 to-white dark:from-emerald-900/30 dark:to-transparent border border-emerald-300 dark:border-emerald-500/30 rounded-3xl p-8 mb-12 text-center">
+    <div class="bg-gradient-to-r from-emerald-100 to-white dark:from-emerald-900/30 dark:to-transparent border border-emerald-300 dark:border-emerald-500/30 rounded-3xl p-8 mb-8 text-center">
       <h2 class="text-emerald-600 dark:text-emerald-400 font-bold text-2xl mb-6">Extra Profit vs Doing Nothing</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
         <div>
@@ -105,6 +105,19 @@
           <p id="extraProfitHeloc" class="text-5xl sm:text-6xl font-bold text-orange-600 dark:text-orange-400">+$2,179,500</p>
         </div>
       </div>
+    </div>
+
+    <!-- TRANSPARENCY NOTE - HomeTap Assumptions -->
+    <div class="max-w-2xl mx-auto mb-10 px-6 py-5 bg-white/70 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 rounded-3xl text-center">
+      <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+        <strong>HomeTap assumptions (for full transparency):</strong><br>
+        • 4.5% origination fee deducted upfront — matches Hometap’s actual 2026 rate<br>
+        • 40% equity share repaid at end of 10-year term (conservative/simplified estimate)<br>
+        • No monthly payments required
+      </p>
+      <p class="text-[10px] text-gray-400 dark:text-gray-500 mt-3">
+        These are the exact numbers used in all HomeTap calculations on this page.
+      </p>
     </div>
 
     <!-- RESULTS -->
@@ -269,11 +282,11 @@
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,           // ← makes chart scale perfectly on phones
+          maintainAspectRatio: false,
           plugins: {
             legend: { 
               position: 'top',
-              labels: { font: { size: 13 } }     // smaller, cleaner text on mobile
+              labels: { font: { size: 13 } }
             },
             annotation: {
               annotations: {
