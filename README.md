@@ -19,19 +19,16 @@ This is **v1** — a heartfelt, single-file HTML presentation made specifically 
 - **Clear side-by-side comparison** of HomeTap vs HELOC vs Do Nothing
 - **Wealth-over-time chart** (2026–2040) using Chart.js
 - **Fully responsive** design (works great on phones)
-- **Dark/light mode** toggle with persistence-ready code
-- **Zero dependencies** — single HTML file, no build step
+- **Dark/light mode** toggle
+- **Built-in transparency notes** so everything is easy to understand
 
 ---
 
 ## How to Run
 
 1. Download `index.html`
-2. Open it in any browser (Chrome, Safari, Firefox, etc.)
-3. No server needed — everything runs locally
-
-Or deploy instantly:
-- Push to GitHub → enable **GitHub Pages** (Settings → Pages → Deploy from main branch)
+2. Open it in any browser (no server needed)
+3. Or push to GitHub and enable **GitHub Pages**
 
 ---
 
@@ -39,44 +36,47 @@ Or deploy instantly:
 
 **This is for educational and illustrative purposes only.** It is **not financial advice**.
 
-### HomeTap Model
-- 4.5% origination fee (deducted upfront — matches Hometap’s actual 2026 rate)
-- 40% equity share paid back at end of 10-year term (conservative/simplified estimate)
-- No monthly payments
+### HomeTap (full transparency)
+- **4.5% origination fee** deducted upfront — matches Hometap’s actual 2026 rate
+- **40% equity share** repaid at end of 10-year term (**conservative/simplified estimate**)
+  - Real HomeTap offers are typically 25–35% for a pull of this size, which would mean **even higher profit** than shown
+- **No monthly payments** required
+- You can settle early (sell or refinance) at any time
 
-### HELOC Model
-- Standard amortizing 10-year loan with monthly payments
+> *Note on the page: “We used a conservative 40% share (real HomeTap offers are typically 25–35% for this size pull, which would give you even more profit).”*
+
+### HELOC
+- Standard 10-year amortizing loan with monthly payments
 - Interest rate set by slider
 
 ### Bitcoin Power Law
-- Uses Giovanni Santostasi’s long-term power-law trend as the foundation
-- The “Base Case” ($1.8M in 2036) closely aligns with current public projections of the fair-value line
-- Post-2036 growth is approximated to keep the model simple and visual
+- Based on Giovanni Santostasi’s long-term power-law trend
+- Base case ($1.8M in 2036) closely matches current fair-value projections
+- Post-2036 growth is a simple approximation for clarity
 
-All numbers are projections based on your inputs. Past performance and power-law trends do not guarantee future results.
+All numbers are projections based on your inputs. Past performance is not indicative of future results.
 
 ---
 
 ## Tech Stack
 
-- **HTML + Tailwind CSS** (via CDN)
-- **Chart.js** for the wealth projection chart
-- Vanilla JavaScript (no frameworks)
-- Fully self-contained in one file
+- HTML + Tailwind CSS (via CDN)
+- Chart.js
+- Vanilla JavaScript
+- Fully self-contained single file
 
 ---
 
 ## Roadmap / Future Versions
 
-This v1 was intentionally personal and focused on my parents. Planned improvements for public/generic versions:
+This v1 was intentionally personal. Planned improvements:
 
-- Remove “Mom & Dad” branding → make it neutral (“Home Equity + Bitcoin Calculator”)
-- Flexible loan term (choose any end year instead of fixed 2036/10 years)
-- More home equity products (Unison, Point, etc.)
-- Custom Bitcoin scenarios + full power-law formula input
-- Export results as PDF or image
-- LocalStorage saving of inputs
-- Mobile-first enhancements and accessibility polish
+- Remove “Mom & Dad” branding → neutral “Home Equity + Bitcoin Calculator”
+- Flexible loan term (choose any end year)
+- Support for more products (Unison, Point, etc.)
+- Export results as PDF/image
+- LocalStorage for saving inputs
+- Even more transparency and accessibility features
 
 ---
 
@@ -85,17 +85,16 @@ This v1 was intentionally personal and focused on my parents. Planned improvemen
 - Bitcoin Power Law model → Giovanni Santostasi
 - Tailwind CSS via CDN
 - Chart.js
-- CoinGecko API for live BTC price
+- CoinGecko API
 - Built with love for my parents ❤️
 
 ---
 
 ## License
 
-MIT License — feel free to fork, modify, and use however you like.  
-If you make a cooler version, I’d love to see it!
+MIT License — feel free to fork, modify, and use however you like.
 
 ---
 
 **Made in April 2026**  
-If this helped spark a conversation with your own family, that’s the real win.
+If this helps spark a good conversation with your own family, that’s the real win.

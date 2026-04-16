@@ -107,7 +107,7 @@
       </div>
     </div>
 
-    <!-- TRANSPARENCY NOTE - HomeTap Assumptions -->
+    <!-- TRANSPARENCY NOTE -->
     <div class="max-w-2xl mx-auto mb-10 px-6 py-5 bg-white/70 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 rounded-3xl text-center">
       <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
         <strong>HomeTap assumptions (for full transparency):</strong><br>
@@ -134,7 +134,13 @@
         <p class="text-sm text-emerald-700 dark:text-emerald-300">Your total net wealth in 2036</p>
         <div class="mt-6 pt-6 border-t border-emerald-200 dark:border-emerald-500/20 text-sm">
           <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">You pay HomeTap at end of 2036:</span><span id="hometapPayment" class="font-medium">$508,200</span></p>
-          <p class="flex justify-between mt-2"><span class="text-emerald-600 dark:text-emerald-400 font-semibold">True extra profit:</span><span id="hometapProfit" class="font-bold text-emerald-600 dark:text-emerald-400">+$1,539,800</span></p>
+          
+          <!-- NEW ONE-SENTENCE NOTE -->
+          <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-3 italic">
+            Note: We used a conservative 40% share (real HomeTap offers are typically 25–35% for this size pull, which would give you even more profit).
+          </p>
+          
+          <p class="flex justify-between mt-4"><span class="text-emerald-600 dark:text-emerald-400 font-semibold">True extra profit:</span><span id="hometapProfit" class="font-bold text-emerald-600 dark:text-emerald-400">+$1,539,800</span></p>
         </div>
       </div>
 
@@ -216,9 +222,9 @@
 
       const futureHome = homeValue * Math.pow(1 + homeRate, 10);
 
-      const cashReceivedHT = cashPull * 0.955;                    // 4.5% origination fee (exact Hometap rate)
+      const cashReceivedHT = cashPull * 0.955;
       const btcBoughtHT = cashReceivedHT / currentBtcPrice;
-      const hometapShare = futureHome * 0.40;                     // 40% share — conservative estimate
+      const hometapShare = futureHome * 0.40;
       const remainingEquityHT = futureHome - hometapShare;
       const btcValueHT = btcBoughtHT * target2036;
       const totalHT = remainingEquityHT + btcValueHT;
@@ -315,7 +321,6 @@
       });
     }
 
-    // Improved dark mode functions
     function updateThemeButton() {
       const isDark = document.documentElement.classList.contains('dark');
       const icon = document.getElementById('themeIcon');
@@ -336,7 +341,6 @@
       calculateAndUpdate();
     }
 
-    // Event listeners
     ['homeValue','cashPull','homeAppRate','helocRate','btcScenario','btcPrice'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', calculateAndUpdate);
