@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeTap vs HELOC — Bitcoin Pitch for Mom & Dad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 py-8">
+  <div class="max-w-6xl mx-auto px-6">
+    <h1 class="text-4xl font-bold text-center mb-2">Mom & Dad's Bitcoin Opportunity</h1>
+    <p class="text-center text-xl text-gray-600 mb-8">HomeTap (no monthly payments) vs HELOC vs Do Nothing</p>
+
+    <!-- INPUTS -->
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
+      <div>
+        <label class="block text-sm font-medium mb-1">Current Home Value</label>
+        <input id="homeValue" type="range" min="500000" max="1000000" step="10000" value="780000" class="w-full accent-blue-600">
+        <div class="flex justify-between text-xs mt-1"><span>$500k</span><span id="homeValueDisplay" class="font-bold">$780,000</span><span>$1M</span></div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Cash to Pull for Bitcoin</label>
+        <input id="cashPull" type="range" min="100000" max="250000" step="10000" value="200000" class="w-full accent-blue-600">
+        <div class="flex justify-between text-xs mt-1"><span>$100k</span><span id="cashPullDisplay" class="font-bold">$200,000</span><span>$250k</span></div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Annual Home Appreciation</label>
+        <input id="homeAppRate" type="range" min="3" max="7" step="0.1" value="5" class="w-full accent-blue-600">
+        <div class="flex justify-between text-xs mt-1"><span>3%</span><span id="homeAppRateDisplay" class="font-bold">5.0%</span><span>7%</span></div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">HELOC Interest Rate</label>
+        <input id="helocRate" type="range" min="5" max="10" step="0.1" value="7.5" class="w-full accent-orange-600">
+        <div class="flex justify-between text-xs mt-1"><span>5%</span><span id="helocRateDisplay" class="font-bold">7.5%</span><span>10%</span></div>
+      </div>
+
+      <!-- NEW: Live Bitcoin Price -->
+      <div>
+        <label class="block text-sm font-medium mb-1 flex items-center gap-2">
+          Current Bitcoin Price
+          <button onclick="fetchBtcPrice()" class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-0.5 rounded-full">↻ Refresh</button>
+        </label>
+        <div class="flex">
+          <input id="btcPrice" type="number" value="74500" class="w-full p-3 border rounded-2xl text-lg font-medium">
+          <span class="ml-3 self-center text-sm text-gray-500">USD</span>
+        </div>
+        <div id="btcLastUpdated" class="text-xs text-gray-500 mt-1">Live from CoinGecko • Loading...</div>
+      </div>
+    </div>
+
+    <!-- BTC Scenario -->
+    <div class="mb-8 max-w-xs mx-auto">
+      <label class="block text-sm font-medium mb-2">Bitcoin Price in 2036 (Power-Law Model)</label>
+      <select id="btcScenario" class="w-full p-3 border rounded-2xl text-lg">
+        <option value="800000">Worst Case — $800,000</option>
+        <option value="1800000" selected>Base Case — $1.8 Million</option>
+        <option value="2500000">Bull Case — $2.5 Million</option>
+      </select>
+    </div>
+
+    <!-- Extra Profit Summary -->
+    <div class="bg-emerald-100 border-2 border-emerald-300 rounded-3xl p-8 mb-12 text-center">
+      <h2 class="text-emerald-700 font-bold text-2xl mb-6">Extra Profit vs Doing Nothing</h2>
+      <div class="grid grid-cols-2 gap-12">
+        <div>
+          <p class="text-emerald-600 text-lg">HomeTap + Bitcoin</p>
+          <p id="extraProfitHomeTap" class="text-5xl font-bold text-emerald-600">+$1,539,800</p>
+        </div>
+        <div>
+          <p class="text-orange-600 text-lg">HELOC + Bitcoin</p>
+          <p id="extraProfitHeloc" class="text-5xl font-bold text-orange-600">+$2,179,500</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white rounded-3xl shadow p-6">
+        <h3 class="font-semibold text-gray-500">1. Do Nothing</h3>
+        <p id="doNothingValue" class="text-4xl font-bold mt-2">$1,270,500</p>
+        <p class="text-sm text-gray-500">Home equity in 2036</p>
+      </div>
+
+      <div class="bg-emerald-50 rounded-3xl shadow p-6 border border-emerald-200">
+        <h3 class="font-semibold text-emerald-700">2. HomeTap + Bitcoin</h3>
+        <p id="hometapNet" class="text-4xl font-bold text-emerald-600 mt-2">$2,810,300</p>
+        <p class="text-sm text-emerald-600">Your total net wealth in 2036</p>
+        <div class="mt-6 pt-6 border-t text-sm">
+          <p class="flex justify-between"><span class="text-gray-500">You pay HomeTap at end:</span><span id="hometapPayment" class="font-medium">$508,200</span></p>
+          <p class="flex justify-between mt-2"><span class="text-emerald-700 font-semibold">True extra profit:</span><span id="hometapProfit" class="font-bold text-emerald-600">+$1,539,800</span></p>
+        </div>
+      </div>
+
+      <div class="bg-orange-50 rounded-3xl shadow p-6 border border-orange-200">
+        <h3 class="font-semibold text-orange-700">3. HELOC + Bitcoin</h3>
+        <p id="helocNet" class="text-4xl font-bold text-orange-600 mt-2">$3,450,000</p>
+        <p class="text-sm text-orange-600">Your total net wealth in 2036</p>
+        <div class="mt-6 pt-6 border-t text-sm space-y-3">
+          <p class="flex justify-between"><span class="text-gray-500">Monthly payment:</span><span id="helocMonthly" class="font-medium">$2,420</span></p>
+          <p class="flex justify-between"><span class="text-gray-500">Total you pay over 10 years:</span><span id="helocTotalPaid" class="font-medium">$290,400</span></p>
+          <p class="flex justify-between"><span class="text-orange-700 font-semibold">True extra profit:</span><span id="helocProfit" class="font-bold text-orange-600">+$2,179,500</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-3xl shadow">
+        <h3 class="font-semibold mb-4">Wealth Over 10 Years</h3>
+        <canvas id="lineChart" height="340"></canvas>
+      </div>
+      <div class="bg-white p-6 rounded-3xl shadow">
+        <h3 class="font-semibold mb-4">Final Wealth in 2036</h3>
+        <canvas id="barChart" height="340"></canvas>
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-gray-400 mt-8">April 2026 data • Powered by CoinGecko live price</p>
+  </div>
+
+  <script>
+    let lineChart, barChart;
+    let currentBtcPrice = 74500;
+
+    function pmt(principal, annualRate, years) {
+      const r = annualRate / 12 / 100;
+      const n = years * 12;
+      if (r === 0) return principal / n;
+      return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+    }
+
+    async function fetchBtcPrice() {
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const data = await res.json();
+        currentBtcPrice = data.bitcoin.usd;
+        document.getElementById('btcPrice').value = Math.round(currentBtcPrice);
+        const now = new Date();
+        document.getElementById('btcLastUpdated').innerHTML = `Live from CoinGecko • Updated ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`;
+        calculateAndUpdate();
+      } catch (e) {
+        document.getElementById('btcLastUpdated').innerHTML = '⚠️ Could not fetch live price (using manual value)';
+      }
+    }
+
+    function calculateAndUpdate() {
+      const homeValue = parseFloat(document.getElementById('homeValue').value);
+      const cashPull = parseFloat(document.getElementById('cashPull').value);
+      const homeRate = parseFloat(document.getElementById('homeAppRate').value) / 100;
+      const helocRate = parseFloat(document.getElementById('helocRate').value);
+      const btcPrice2036 = parseFloat(document.getElementById('btcScenario').value);
+      currentBtcPrice = parseFloat(document.getElementById('btcPrice').value) || 74500;
+
+      // Display inputs
+      document.getElementById('homeValueDisplay').textContent = '$' + homeValue.toLocaleString();
+      document.getElementById('cashPullDisplay').textContent = '$' + cashPull.toLocaleString();
+      document.getElementById('homeAppRateDisplay').textContent = (homeRate * 100).toFixed(1) + '%';
+      document.getElementById('helocRateDisplay').textContent = helocRate.toFixed(1) + '%';
+
+      const futureHome = homeValue * Math.pow(1 + homeRate, 10);
+
+      // HomeTap
+      const cashReceivedHT = cashPull * 0.955;
+      const btcBoughtHT = cashReceivedHT / currentBtcPrice;
+      const hometapShare = futureHome * 0.40;
+      const remainingEquityHT = futureHome - hometapShare;
+      const btcValueHT = btcBoughtHT * btcPrice2036;
+      const totalHT = remainingEquityHT + btcValueHT;
+
+      // HELOC
+      const btcBoughtHL = cashPull / currentBtcPrice;
+      const monthlyHL = pmt(cashPull, helocRate, 10);
+      const totalPaidHL = monthlyHL * 120;
+      const btcValueHL = btcBoughtHL * btcPrice2036;
+      const totalHL = futureHome + btcValueHL;
+
+      const doNothing = futureHome;
+
+      // Update numbers
+      document.getElementById('doNothingValue').textContent = '$' + Math.round(doNothing).toLocaleString();
+      document.getElementById('hometapNet').textContent = '$' + Math.round(totalHT).toLocaleString();
+      document.getElementById('helocNet').textContent = '$' + Math.round(totalHL).toLocaleString();
+
+      document.getElementById('hometapPayment').textContent = '$' + Math.round(hometapShare).toLocaleString();
+      document.getElementById('hometapProfit').textContent = '+$' + Math.round(totalHT - doNothing).toLocaleString();
+      document.getElementById('extraProfitHomeTap').textContent = '+$' + Math.round(totalHT - doNothing).toLocaleString();
+
+      document.getElementById('helocMonthly').textContent = '$' + Math.round(monthlyHL).toLocaleString();
+      document.getElementById('helocTotalPaid').textContent = '$' + Math.round(totalPaidHL).toLocaleString();
+      document.getElementById('helocProfit').textContent = '+$' + Math.round(totalHL - doNothing).toLocaleString();
+      document.getElementById('extraProfitHeloc').textContent = '+$' + Math.round(totalHL - doNothing).toLocaleString();
+
+      updateCharts(futureHome, totalHT, totalHL, homeRate);
+    }
+
+    function updateCharts(futureHome, totalHT, totalHL, homeRate) {
+      const years = Array.from({length: 11}, (_, i) => 2026 + i);
+      if (lineChart) lineChart.destroy();
+      lineChart = new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            { label: 'Do Nothing', data: years.map((_, i) => Math.round(780000 * Math.pow(1 + homeRate, i))), borderColor: '#6b7280', tension: 0.3 },
+            { label: 'HomeTap + BTC', data: years.map((_, i) => i === 10 ? Math.round(totalHT) : 780000), borderColor: '#10b981', tension: 0.3 },
+            { label: 'HELOC + BTC', data: years.map((_, i) => i === 10 ? Math.round(totalHL) : 780000), borderColor: '#f59e0b', tension: 0.3 }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } } }
+      });
+
+      if (barChart) barChart.destroy();
+      barChart = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Do Nothing', 'HomeTap + BTC', 'HELOC + BTC'],
+          datasets: [{
+            label: 'Net Wealth 2036',
+            data: [Math.round(futureHome), Math.round(totalHT), Math.round(totalHL)],
+            backgroundColor: ['#6b7280', '#10b981', '#f59e0b']
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } } }
+      });
+    }
+
+    // Event listeners
+    ['homeValue','cashPull','homeAppRate','helocRate','btcScenario','btcPrice'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', calculateAndUpdate);
+      if (el && el.tagName === 'SELECT') el.addEventListener('change', calculateAndUpdate);
+    });
+
+    // Initial load
+    window.onload = () => {
+      fetchBtcPrice();           // auto-fetch live price
+      calculateAndUpdate();
+    };
+  </script>
+</body>
+</html>
