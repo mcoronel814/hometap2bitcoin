@@ -13,7 +13,7 @@
 <body class="bg-gray-50 py-8">
   <div class="max-w-6xl mx-auto px-6">
     <h1 class="text-4xl font-bold text-center mb-2">Mom & Dad's Bitcoin Opportunity</h1>
-    <p class="text-center text-xl text-gray-600 mb-8">HomeTap (no monthly payments) vs HELOC vs Do Nothing</p>
+    <p class="text-center text-xl text-gray-600 mb-8">HomeTap (no monthly payments) vs HELOC vs Do Nothing • Bitcoin Power Law to 2040</p>
 
     <!-- INPUTS -->
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
@@ -41,7 +41,6 @@
         <div class="flex justify-between text-xs mt-1"><span>5%</span><span id="helocRateDisplay" class="font-bold">7.5%</span><span>10%</span></div>
       </div>
 
-      <!-- NEW: Live Bitcoin Price -->
       <div>
         <label class="block text-sm font-medium mb-1 flex items-center gap-2">
           Current Bitcoin Price
@@ -60,7 +59,7 @@
       <label class="block text-sm font-medium mb-2">Bitcoin Price in 2036 (Power-Law Model)</label>
       <select id="btcScenario" class="w-full p-3 border rounded-2xl text-lg">
         <option value="800000">Worst Case — $800,000</option>
-        <option value="1800000" selected>Base Case — $1.8 Million</option>
+        <option value="1800000" selected>Base Case — $1.8 Million (Power Law Fair Value)</option>
         <option value="2500000">Bull Case — $2.5 Million</option>
       </select>
     </div>
@@ -93,7 +92,7 @@
         <p id="hometapNet" class="text-4xl font-bold text-emerald-600 mt-2">$2,810,300</p>
         <p class="text-sm text-emerald-600">Your total net wealth in 2036</p>
         <div class="mt-6 pt-6 border-t text-sm">
-          <p class="flex justify-between"><span class="text-gray-500">You pay HomeTap at end:</span><span id="hometapPayment" class="font-medium">$508,200</span></p>
+          <p class="flex justify-between"><span class="text-gray-500">You pay HomeTap at end of 2036:</span><span id="hometapPayment" class="font-medium">$508,200</span></p>
           <p class="flex justify-between mt-2"><span class="text-emerald-700 font-semibold">True extra profit:</span><span id="hometapProfit" class="font-bold text-emerald-600">+$1,539,800</span></p>
         </div>
       </div>
@@ -110,24 +109,51 @@
       </div>
     </div>
 
-    <!-- CHARTS -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div class="bg-white p-6 rounded-3xl shadow">
-        <h3 class="font-semibold mb-4">Wealth Over 10 Years</h3>
-        <canvas id="lineChart" height="340"></canvas>
-      </div>
-      <div class="bg-white p-6 rounded-3xl shadow">
-        <h3 class="font-semibold mb-4">Final Wealth in 2036</h3>
-        <canvas id="barChart" height="340"></canvas>
-      </div>
+    <!-- POWER-LAW CHART (now responds to scenario) -->
+    <div class="bg-white p-6 rounded-3xl shadow">
+      <h3 class="font-semibold mb-4">Wealth Over Time (2026–2040) — Bitcoin Power Law Growth</h3>
+      <canvas id="lineChart" height="380"></canvas>
     </div>
 
-    <p class="text-center text-xs text-gray-400 mt-8">April 2026 data • Powered by CoinGecko live price</p>
+    <p class="text-center text-xs text-gray-400 mt-8">April 2026 data • Live Bitcoin price from CoinGecko • Power-law line scales exactly to selected 2036 target</p>
   </div>
 
   <script>
-    let lineChart, barChart;
+    let lineChart;
     let currentBtcPrice = 74500;
+
+    async function fetchBtcPrice() {
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const data = await res.json();
+        currentBtcPrice = data.bitcoin.usd;
+        document.getElementById('btcPrice').value = Math.round(currentBtcPrice);
+        calculateAndUpdate();
+      } catch (e) {}
+    }
+
+    // Power-law growth that exactly hits the selected 2036 target
+    function getPowerLawBtcPrice(year, target2036) {
+      const yearsFromNow = year - 2026;
+      if (yearsFromNow <= 0) return currentBtcPrice;
+
+      // Base power-law curve calibrated to Santostasi model (1.8M in 2036)
+      const base2036 = 1800000;
+      const scale = target2036 / base2036;
+
+      // Smooth power-law growth to 2036
+      const growthTo2036 = Math.pow(target2036 / currentBtcPrice, yearsFromNow / 10);
+
+      if (yearsFromNow <= 10) {
+        return Math.round(currentBtcPrice * growthTo2036);
+      }
+
+      // Continue power-law growth after 2036 (slower, matching model to ~$4.78M in 2040 at base)
+      const priceAt2036 = currentBtcPrice * Math.pow(target2036 / currentBtcPrice, 1);
+      const yearsAfter = yearsFromNow - 10;
+      const post2036Growth = Math.pow(2.67, yearsAfter / 4); // calibrated to reach ~$4.78M in 2040 on base
+      return Math.round(priceAt2036 * post2036Growth * scale);
+    }
 
     function pmt(principal, annualRate, years) {
       const r = annualRate / 12 / 100;
@@ -136,29 +162,15 @@
       return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
     }
 
-    async function fetchBtcPrice() {
-      try {
-        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-        const data = await res.json();
-        currentBtcPrice = data.bitcoin.usd;
-        document.getElementById('btcPrice').value = Math.round(currentBtcPrice);
-        const now = new Date();
-        document.getElementById('btcLastUpdated').innerHTML = `Live from CoinGecko • Updated ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`;
-        calculateAndUpdate();
-      } catch (e) {
-        document.getElementById('btcLastUpdated').innerHTML = '⚠️ Could not fetch live price (using manual value)';
-      }
-    }
-
     function calculateAndUpdate() {
       const homeValue = parseFloat(document.getElementById('homeValue').value);
       const cashPull = parseFloat(document.getElementById('cashPull').value);
       const homeRate = parseFloat(document.getElementById('homeAppRate').value) / 100;
       const helocRate = parseFloat(document.getElementById('helocRate').value);
-      const btcPrice2036 = parseFloat(document.getElementById('btcScenario').value);
+      const target2036 = parseFloat(document.getElementById('btcScenario').value);
       currentBtcPrice = parseFloat(document.getElementById('btcPrice').value) || 74500;
 
-      // Display inputs
+      // Update displays
       document.getElementById('homeValueDisplay').textContent = '$' + homeValue.toLocaleString();
       document.getElementById('cashPullDisplay').textContent = '$' + cashPull.toLocaleString();
       document.getElementById('homeAppRateDisplay').textContent = (homeRate * 100).toFixed(1) + '%';
@@ -166,24 +178,24 @@
 
       const futureHome = homeValue * Math.pow(1 + homeRate, 10);
 
-      // HomeTap
+      // HomeTap calculations
       const cashReceivedHT = cashPull * 0.955;
       const btcBoughtHT = cashReceivedHT / currentBtcPrice;
       const hometapShare = futureHome * 0.40;
       const remainingEquityHT = futureHome - hometapShare;
-      const btcValueHT = btcBoughtHT * btcPrice2036;
+      const btcValueHT = btcBoughtHT * target2036;
       const totalHT = remainingEquityHT + btcValueHT;
 
-      // HELOC
+      // HELOC calculations
       const btcBoughtHL = cashPull / currentBtcPrice;
       const monthlyHL = pmt(cashPull, helocRate, 10);
       const totalPaidHL = monthlyHL * 120;
-      const btcValueHL = btcBoughtHL * btcPrice2036;
+      const btcValueHL = btcBoughtHL * target2036;
       const totalHL = futureHome + btcValueHL;
 
       const doNothing = futureHome;
 
-      // Update numbers
+      // Update result cards
       document.getElementById('doNothingValue').textContent = '$' + Math.round(doNothing).toLocaleString();
       document.getElementById('hometapNet').textContent = '$' + Math.round(totalHT).toLocaleString();
       document.getElementById('helocNet').textContent = '$' + Math.round(totalHL).toLocaleString();
@@ -197,37 +209,65 @@
       document.getElementById('helocProfit').textContent = '+$' + Math.round(totalHL - doNothing).toLocaleString();
       document.getElementById('extraProfitHeloc').textContent = '+$' + Math.round(totalHL - doNothing).toLocaleString();
 
-      updateCharts(futureHome, totalHT, totalHL, homeRate);
+      updateCharts(homeValue, homeRate, cashPull, target2036);
     }
 
-    function updateCharts(futureHome, totalHT, totalHL, homeRate) {
-      const years = Array.from({length: 11}, (_, i) => 2026 + i);
+    function updateCharts(homeValue, homeRate, cashPull, target2036) {
+      const years = Array.from({length: 15}, (_, i) => 2026 + i);
+
+      const doNothingData = years.map((_, i) => Math.round(homeValue * Math.pow(1 + homeRate, i)));
+
+      const powerLawBtcData = years.map(year => getPowerLawBtcPrice(year, target2036));
+
+      const hometapData = years.map((year, i) => {
+        const futureHome = homeValue * Math.pow(1 + homeRate, i);
+        const btcValue = (cashPull * 0.955 / currentBtcPrice) * powerLawBtcData[i];
+        if (year >= 2036) {
+          const hometapShare = futureHome * 0.40;
+          return Math.round(futureHome - hometapShare + btcValue);
+        }
+        return Math.round(futureHome + btcValue);
+      });
+
+      const helocData = years.map((year, i) => {
+        const futureHome = homeValue * Math.pow(1 + homeRate, i);
+        const btcValue = (cashPull / currentBtcPrice) * powerLawBtcData[i];
+        return Math.round(futureHome + btcValue);
+      });
+
       if (lineChart) lineChart.destroy();
       lineChart = new Chart(document.getElementById('lineChart'), {
         type: 'line',
         data: {
           labels: years,
           datasets: [
-            { label: 'Do Nothing', data: years.map((_, i) => Math.round(780000 * Math.pow(1 + homeRate, i))), borderColor: '#6b7280', tension: 0.3 },
-            { label: 'HomeTap + BTC', data: years.map((_, i) => i === 10 ? Math.round(totalHT) : 780000), borderColor: '#10b981', tension: 0.3 },
-            { label: 'HELOC + BTC', data: years.map((_, i) => i === 10 ? Math.round(totalHL) : 780000), borderColor: '#f59e0b', tension: 0.3 }
+            { label: 'Do Nothing (Home Only)', data: doNothingData, borderColor: '#6b7280', tension: 0.3 },
+            { label: 'HomeTap + Bitcoin (Power Law)', data: hometapData, borderColor: '#10b981', tension: 0.3, borderDash: [2, 2] },
+            { label: 'HELOC + Bitcoin (Power Law)', data: helocData, borderColor: '#f59e0b', tension: 0.3 }
           ]
         },
-        options: { responsive: true, plugins: { legend: { position: 'top' } } }
-      });
-
-      if (barChart) barChart.destroy();
-      barChart = new Chart(document.getElementById('barChart'), {
-        type: 'bar',
-        data: {
-          labels: ['Do Nothing', 'HomeTap + BTC', 'HELOC + BTC'],
-          datasets: [{
-            label: 'Net Wealth 2036',
-            data: [Math.round(futureHome), Math.round(totalHT), Math.round(totalHL)],
-            backgroundColor: ['#6b7280', '#10b981', '#f59e0b']
-          }]
-        },
-        options: { responsive: true, plugins: { legend: { display: false } } }
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            annotation: {
+              annotations: {
+                termLine: {
+                  type: 'line',
+                  xMin: 2036,
+                  xMax: 2036,
+                  borderColor: '#ef4444',
+                  borderWidth: 3,
+                  borderDash: [6, 4],
+                  label: { content: 'End of 10-year term', enabled: true, position: 'top', backgroundColor: '#ef4444', color: '#fff' }
+                }
+              }
+            }
+          },
+          scales: {
+            y: { ticks: { callback: v => '$' + v.toLocaleString() } }
+          }
+        }
       });
     }
 
@@ -238,10 +278,8 @@
       if (el && el.tagName === 'SELECT') el.addEventListener('change', calculateAndUpdate);
     });
 
-    // Initial load
     window.onload = () => {
-      fetchBtcPrice();           // auto-fetch live price
-      calculateAndUpdate();
+      fetchBtcPrice();
     };
   </script>
 </body>
