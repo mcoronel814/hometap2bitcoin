@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomeTap vs HELOC — Bitcoin Pitch for Mom & Dad</title>
+  <title>HomeTap vs Point vs HELOC — Bitcoin Pitch for Mom & Dad</title>
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Tailwind dark mode config -->
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -24,14 +23,12 @@
 </head>
 <body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
 
-  <div class="max-w-6xl mx-auto px-6 py-8">
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-8">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
       <div>
-        <h1 class="text-5xl font-bold tracking-tight">Mom & Dad’s Bitcoin Move</h1>
-        <p class="text-emerald-600 dark:text-emerald-400 text-xl">HomeTap vs HELOC vs Do Nothing • Bitcoin Power Law to 2040</p>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight">Mom & Dad’s Bitcoin Move</h1>
+        <p class="text-emerald-600 dark:text-emerald-400 text-lg md:text-xl mt-1">HomeTap vs Point vs HELOC • Bitcoin Power Law to 2040</p>
       </div>
-      <!-- Dark Mode Toggle -->
       <button onclick="toggleDarkMode()" 
               class="flex items-center gap-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 px-5 py-3 rounded-2xl text-sm font-medium transition-colors">
         <span id="themeIcon" class="text-xl">☀️</span>
@@ -39,7 +36,6 @@
       </button>
     </div>
 
-    <!-- INPUTS -->
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-10 bg-gray-100 dark:bg-gray-900/70 backdrop-blur rounded-3xl p-8 border border-gray-300 dark:border-gray-700">
       <div>
         <label class="block text-sm font-medium mb-1 text-gray-500 dark:text-gray-400">Current Home Value</label>
@@ -55,8 +51,8 @@
 
       <div>
         <label class="block text-sm font-medium mb-1 text-gray-500 dark:text-gray-400">Annual Home Appreciation</label>
-        <input id="homeAppRate" type="range" min="3" max="7" step="0.1" value="5" class="w-full accent-emerald-500">
-        <div class="flex justify-between text-xs mt-1"><span>3%</span><span id="homeAppRateDisplay" class="font-bold">5.0%</span><span>7%</span></div>
+        <input id="homeAppRate" type="range" min="1" max="7" step="0.1" value="5" class="w-full accent-emerald-500">
+        <div class="flex justify-between text-xs mt-1"><span>1%</span><span id="homeAppRateDisplay" class="font-bold">5.0%</span><span>7%</span></div>
       </div>
 
       <div>
@@ -78,89 +74,109 @@
       </div>
     </div>
 
-    <!-- BTC Scenario -->
-    <div class="mb-8 max-w-xs mx-auto">
-      <label class="block text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Bitcoin Price in 2036 (Power-Law Model)</label>
+    <div class="mb-8 max-w-md mx-auto">
+      <label class="block text-sm font-medium mb-2 text-gray-500 dark:text-gray-400 text-center">Bitcoin Price in 2036 (Power-Law Model)</label>
       <select id="btcScenario" class="w-full p-4 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
         <option value="800000">Worst Case — $800,000</option>
         <option value="1800000" selected>Base Case — $1.8 Million (Power Law Fair Value)</option>
         <option value="2500000">Bull Case — $2.5 Million</option>
       </select>
-      <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-        Based on Giovanni Santostasi’s Bitcoin Power Law model. 
-        Base case = long-term fair value trend line.
+      <p class="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
+        Based on Giovanni Santostasi’s Bitcoin Power Law model (β = 5.69). Base case = long-term fair value trend line.
       </p>
     </div>
 
-    <!-- Extra Profit Summary -->
-    <div class="bg-gradient-to-r from-emerald-100 to-white dark:from-emerald-900/30 dark:to-transparent border border-emerald-300 dark:border-emerald-500/30 rounded-3xl p-8 mb-8 text-center">
-      <h2 class="text-emerald-600 dark:text-emerald-400 font-bold text-2xl mb-6">Extra Profit vs Doing Nothing</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
+    <div class="bg-gradient-to-r from-gray-100 to-white dark:from-gray-900/50 dark:to-transparent border border-gray-200 dark:border-gray-700 rounded-3xl p-8 mb-8 text-center shadow-sm">
+      <h2 class="text-gray-800 dark:text-gray-200 font-bold text-2xl mb-6">Extra Profit vs Doing Nothing (in 10 Years)</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
         <div>
-          <p class="text-emerald-600 dark:text-emerald-400 text-base sm:text-lg">HomeTap + Bitcoin</p>
-          <p id="extraProfitHomeTap" class="text-5xl sm:text-6xl font-bold text-emerald-600 dark:text-emerald-400">+$1,539,800</p>
+          <p class="text-emerald-600 dark:text-emerald-400 font-medium text-lg">HomeTap + Bitcoin</p>
+          <p id="extraProfitHomeTap" class="text-4xl lg:text-5xl font-bold text-emerald-600 dark:text-emerald-400 mt-2">+$0</p>
         </div>
         <div>
-          <p class="text-orange-600 dark:text-orange-400 text-base sm:text-lg">HELOC + Bitcoin</p>
-          <p id="extraProfitHeloc" class="text-5xl sm:text-6xl font-bold text-orange-600 dark:text-orange-400">+$2,179,500</p>
+          <p class="text-blue-600 dark:text-blue-400 font-medium text-lg">Point + Bitcoin</p>
+          <p id="extraProfitPoint" class="text-4xl lg:text-5xl font-bold text-blue-600 dark:text-blue-400 mt-2">+$0</p>
+        </div>
+        <div>
+          <p class="text-orange-600 dark:text-orange-400 font-medium text-lg">HELOC + Bitcoin</p>
+          <p id="extraProfitHeloc" class="text-4xl lg:text-5xl font-bold text-orange-600 dark:text-orange-400 mt-2">+$0</p>
         </div>
       </div>
     </div>
 
-    <!-- TRANSPARENCY NOTE -->
-    <div class="max-w-2xl mx-auto mb-10 px-6 py-5 bg-white/70 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 rounded-3xl text-center">
-      <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-        <strong>HomeTap assumptions (for full transparency):</strong><br>
-        • 4.5% origination fee deducted upfront — matches Hometap’s actual 2026 rate<br>
-        • 40% equity share repaid at end of 10-year term (conservative/simplified estimate)<br>
-        • No monthly payments required
+    <div class="max-w-4xl mx-auto mb-10 px-6 py-5 bg-white/70 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 rounded-3xl">
+      <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400 mb-3 text-center font-semibold">
+        Provider Assumptions (for full transparency):
       </p>
-      <p class="text-[10px] text-gray-400 dark:text-gray-500 mt-3">
-        These are the exact numbers used in all HomeTap calculations on this page.
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600 dark:text-gray-400">
+        <div>
+          <strong class="text-emerald-600 dark:text-emerald-400">HomeTap (Share of Value)</strong>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>4.5% origination fee deducted upfront.</li>
+            <li>Takes <strong>40% of total final home value</strong>.</li>
+            <li>Requires settlement at 10 years.</li>
+          </ul>
+        </div>
+        <div>
+          <strong class="text-blue-600 dark:text-blue-400">Point (Share of Appreciation)</strong>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>4.0% origination fee deducted upfront.</li>
+            <li>Applies a <strong>10% risk discount</strong> to your starting home value.</li>
+            <li>Takes back original cash + <strong>40% of the growth</strong> above the discounted value.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-[10px] text-center text-gray-400 dark:text-gray-500 mt-4">
+        *We are holding the 40% equity share constant across both platforms for a clean mathematical comparison, though actual offers may vary based on underwriting.
       </p>
     </div>
 
-    <!-- RESULTS -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-6 border border-gray-200 dark:border-gray-800">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-6 border border-gray-200 dark:border-gray-800 flex flex-col">
         <h3 class="font-semibold text-gray-500 dark:text-gray-400">1. Do Nothing</h3>
-        <p id="doNothingValue" class="text-4xl font-bold mt-2">$1,270,500</p>
+        <p id="doNothingValue" class="text-3xl lg:text-4xl font-bold mt-2">$0</p>
         <p class="text-sm text-gray-500 dark:text-gray-400">Home equity in 2036</p>
-      </div>
-
-      <div class="bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-500/30 rounded-3xl shadow-xl p-6">
-        <h3 class="font-semibold text-emerald-600 dark:text-emerald-400">2. HomeTap + Bitcoin</h3>
-        <p id="hometapNet" class="text-4xl font-bold mt-2 text-emerald-600 dark:text-emerald-400">$2,810,300</p>
-        <p class="text-sm text-emerald-700 dark:text-emerald-300">Your total net wealth in 2036</p>
-        <div class="mt-6 pt-6 border-t border-emerald-200 dark:border-emerald-500/20 text-sm">
-          <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">You pay HomeTap at end of 2036:</span><span id="hometapPayment" class="font-medium">$508,200</span></p>
-          
-          <!-- NEW ONE-SENTENCE NOTE -->
-          <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-3 italic">
-            Note: We used a conservative 40% share (real HomeTap offers are typically 25–35% for this size pull, which would give you even more profit).
-          </p>
-          
-          <p class="flex justify-between mt-4"><span class="text-emerald-600 dark:text-emerald-400 font-semibold">True extra profit:</span><span id="hometapProfit" class="font-bold text-emerald-600 dark:text-emerald-400">+$1,539,800</span></p>
+        <div class="mt-auto pt-6 border-t border-gray-200 dark:border-gray-800 text-sm">
+          <p class="text-gray-500 dark:text-gray-400 italic">No debt, no fees, but zero exposure to Bitcoin.</p>
         </div>
       </div>
 
-      <div class="bg-orange-50 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-500/30 rounded-3xl shadow-xl p-6">
-        <h3 class="font-semibold text-orange-600 dark:text-orange-400">3. HELOC + Bitcoin</h3>
-        <p id="helocNet" class="text-4xl font-bold mt-2 text-orange-600 dark:text-orange-400">$3,450,000</p>
-        <p class="text-sm text-orange-700 dark:text-orange-300">Your total net wealth in 2036</p>
-        <div class="mt-6 pt-6 border-t border-orange-200 dark:border-orange-500/20 text-sm space-y-3">
-          <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Monthly payment:</span><span id="helocMonthly" class="font-medium">$2,420</span></p>
-          <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Total you pay over 10 years:</span><span id="helocTotalPaid" class="font-medium">$290,400</span></p>
-          <p class="flex justify-between"><span class="text-orange-600 dark:text-orange-400 font-semibold">True extra profit:</span><span id="helocProfit" class="font-bold text-orange-600 dark:text-orange-400">+$2,179,500</span></p>
+      <div class="bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-500/30 rounded-3xl shadow-xl p-6 flex flex-col">
+        <h3 class="font-semibold text-emerald-600 dark:text-emerald-400">2. HomeTap + BTC</h3>
+        <p id="hometapNet" class="text-3xl lg:text-4xl font-bold mt-2 text-emerald-600 dark:text-emerald-400">$0</p>
+        <p class="text-sm text-emerald-700 dark:text-emerald-300">Net wealth in 2036</p>
+        <div class="mt-auto pt-6 border-t border-emerald-200 dark:border-emerald-500/20 text-sm">
+          <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">You pay HomeTap:</span><span id="hometapPayment" class="font-medium">$0</span></p>
+          <p class="flex justify-between mt-4"><span class="text-emerald-600 dark:text-emerald-400 font-semibold">Extra profit:</span><span id="hometapProfit" class="font-bold text-emerald-600 dark:text-emerald-400">+$0</span></p>
+        </div>
+      </div>
+
+      <div class="bg-blue-50 dark:bg-blue-950/60 border border-blue-300 dark:border-blue-500/30 rounded-3xl shadow-xl p-6 flex flex-col">
+        <h3 class="font-semibold text-blue-600 dark:text-blue-400">3. Point + BTC</h3>
+        <p id="pointNet" class="text-3xl lg:text-4xl font-bold mt-2 text-blue-600 dark:text-blue-400">$0</p>
+        <p class="text-sm text-blue-700 dark:text-blue-300">Net wealth in 2036</p>
+        <div class="mt-auto pt-6 border-t border-blue-200 dark:border-blue-500/20 text-sm">
+          <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">You pay Point:</span><span id="pointPayment" class="font-medium">$0</span></p>
+          <p class="flex justify-between mt-4"><span class="text-blue-600 dark:text-blue-400 font-semibold">Extra profit:</span><span id="pointProfit" class="font-bold text-blue-600 dark:text-blue-400">+$0</span></p>
+        </div>
+      </div>
+
+      <div class="bg-orange-50 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-500/30 rounded-3xl shadow-xl p-6 flex flex-col">
+        <h3 class="font-semibold text-orange-600 dark:text-orange-400">4. HELOC + BTC</h3>
+        <p id="helocNet" class="text-3xl lg:text-4xl font-bold mt-2 text-orange-600 dark:text-orange-400">$0</p>
+        <p class="text-sm text-orange-700 dark:text-orange-300">Net wealth in 2036</p>
+        <div class="mt-auto pt-6 border-t border-orange-200 dark:border-orange-500/20 text-sm space-y-2">
+          <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Monthly pmt:</span><span id="helocMonthly" class="font-medium">$0</span></p>
+          <p class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">10-yr interest paid:</span><span id="helocTotalInterest" class="font-medium">$0</span></p>
+          <p class="flex justify-between mt-2 pt-2 border-t border-orange-200/50 dark:border-orange-500/10"><span class="text-orange-600 dark:text-orange-400 font-semibold">Extra profit:</span><span id="helocProfit" class="font-bold text-orange-600 dark:text-orange-400">+$0</span></p>
         </div>
       </div>
     </div>
 
-    <!-- CHART -->
     <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 border border-gray-200 dark:border-gray-700">
-      <h3 class="font-semibold mb-6 text-xl">Wealth Over Time (2026–2040) — Bitcoin Power Law Growth</h3>
+      <h3 class="font-semibold mb-6 text-xl">Wealth Over Time (2026–2040) — Assumes Exit at Year 10</h3>
       <div class="chart-container">
-        <canvas id="lineChart" height="340"></canvas>
+        <canvas id="lineChart" height="360"></canvas>
       </div>
     </div>
 
@@ -178,26 +194,45 @@
         currentBtcPrice = data.bitcoin.usd;
         document.getElementById('btcPrice').value = Math.round(currentBtcPrice);
         calculateAndUpdate();
-      } catch (e) {}
+      } catch (e) {
+        document.getElementById('btcLastUpdated').textContent = "Could not load live price. Using default.";
+      }
     }
 
     function getPowerLawBtcPrice(year, target2036) {
-      const yearsFromNow = year - 2026;
-      if (yearsFromNow <= 0) return currentBtcPrice;
+      // Return live price for the starting year
+      if (year <= 2026) return currentBtcPrice;
 
-      const base2036 = 1800000;
-      const scale = target2036 / base2036;
+      // 1. Define the timeframe based on Bitcoin's Genesis Block (Jan 3, 2009)
+      const genesisDate = new Date("2009-01-03").getTime();
+      
+      // Use exact current date for the baseline, and July 1st as a mid-year point for future projections
+      const currentDate = new Date("2026-04-18").getTime(); 
+      const targetDate = new Date(`${year}-07-01`).getTime(); 
+      const date2036 = new Date("2036-07-01").getTime();
 
-      const growthTo2036 = Math.pow(target2036 / currentBtcPrice, yearsFromNow / 10);
+      // Convert the time elapsed into days (t)
+      const daysToday = (currentDate - genesisDate) / (1000 * 60 * 60 * 24);
+      const daysFuture = (targetDate - genesisDate) / (1000 * 60 * 60 * 24);
+      const days2036 = (date2036 - genesisDate) / (1000 * 60 * 60 * 24);
 
-      if (yearsFromNow <= 10) {
-        return Math.round(currentBtcPrice * growthTo2036);
-      }
+      // 2. Apply Santostasi's exact Power Law Exponent
+      const beta = 5.69;
 
-      const priceAt2036 = currentBtcPrice * Math.pow(target2036 / currentBtcPrice, 1);
-      const yearsAfter = yearsFromNow - 10;
-      const post2036Growth = Math.pow(2.67, yearsAfter / 4);
-      return Math.round(priceAt2036 * post2036Growth * scale);
+      // Calculate the pure power-law growth multiplier from today to the future year
+      const powerLawGrowth = Math.pow(daysFuture / daysToday, beta);
+      
+      // Calculate the growth multiplier specifically for the year 2036
+      const growthTo2036 = Math.pow(days2036 / daysToday, beta);
+
+      // 3. Anchor the curve to the selected 2036 Scenario
+      const rawPrice2036 = currentBtcPrice * growthTo2036;
+      
+      // Create a scale factor to shift the curve to perfectly hit the dropdown target
+      const scenarioScale = target2036 / rawPrice2036;
+
+      // Calculate final price: Live Price * Power Law Growth * Scenario Adjustment
+      return Math.round(currentBtcPrice * powerLawGrowth * scenarioScale);
     }
 
     function pmt(principal, annualRate, years) {
@@ -220,35 +255,58 @@
       document.getElementById('homeAppRateDisplay').textContent = (homeRate * 100).toFixed(1) + '%';
       document.getElementById('helocRateDisplay').textContent = helocRate.toFixed(1) + '%';
 
+      // Year 10 Math
       const futureHome = homeValue * Math.pow(1 + homeRate, 10);
+      const doNothing = futureHome;
 
-      const cashReceivedHT = cashPull * 0.955;
+      // Hometap Math (Share of Value)
+      const cashReceivedHT = cashPull * 0.955; // 4.5% fee
       const btcBoughtHT = cashReceivedHT / currentBtcPrice;
       const hometapShare = futureHome * 0.40;
-      const remainingEquityHT = futureHome - hometapShare;
-      const btcValueHT = btcBoughtHT * target2036;
-      const totalHT = remainingEquityHT + btcValueHT;
+      const totalHT = (futureHome - hometapShare) + (btcBoughtHT * target2036);
 
+      // Point Math (Share of Appreciation)
+      const cashReceivedPT = cashPull * 0.96; // 4.0% fee
+      const btcBoughtPT = cashReceivedPT / currentBtcPrice;
+      const pointStartingValue = homeValue * 0.90; // 10% Risk Discount
+      // Point takes original cash pull + 40% of the growth above starting value
+      const pointGrowthShare = Math.max(0, (futureHome - pointStartingValue) * 0.40);
+      const pointPayment = cashPull + pointGrowthShare; 
+      const totalPT = (futureHome - pointPayment) + (btcBoughtPT * target2036);
+
+      // HELOC Math
       const btcBoughtHL = cashPull / currentBtcPrice;
       const monthlyHL = pmt(cashPull, helocRate, 10);
       const totalPaidHL = monthlyHL * 120;
-      const btcValueHL = btcBoughtHL * target2036;
-      const totalHL = futureHome + btcValueHL;
+      const totalInterestHL = totalPaidHL - cashPull;
+      const totalHL = futureHome + (btcBoughtHL * target2036);
 
-      const doNothing = futureHome;
-
+      // DOM Updates - Values
       document.getElementById('doNothingValue').textContent = '$' + Math.round(doNothing).toLocaleString();
       document.getElementById('hometapNet').textContent = '$' + Math.round(totalHT).toLocaleString();
+      document.getElementById('pointNet').textContent = '$' + Math.round(totalPT).toLocaleString();
       document.getElementById('helocNet').textContent = '$' + Math.round(totalHL).toLocaleString();
 
+      // DOM Updates - Payments & Breakdowns
       document.getElementById('hometapPayment').textContent = '$' + Math.round(hometapShare).toLocaleString();
-      document.getElementById('hometapProfit').textContent = '+$' + Math.round(totalHT - doNothing).toLocaleString();
-      document.getElementById('extraProfitHomeTap').textContent = '+$' + Math.round(totalHT - doNothing).toLocaleString();
-
+      document.getElementById('pointPayment').textContent = '$' + Math.round(pointPayment).toLocaleString();
+      
       document.getElementById('helocMonthly').textContent = '$' + Math.round(monthlyHL).toLocaleString();
-      document.getElementById('helocTotalPaid').textContent = '$' + Math.round(totalPaidHL).toLocaleString();
-      document.getElementById('helocProfit').textContent = '+$' + Math.round(totalHL - doNothing).toLocaleString();
-      document.getElementById('extraProfitHeloc').textContent = '+$' + Math.round(totalHL - doNothing).toLocaleString();
+      document.getElementById('helocTotalInterest').textContent = '$' + Math.round(totalInterestHL).toLocaleString();
+
+      // DOM Updates - Profits
+      const profitHT = Math.round(totalHT - doNothing);
+      const profitPT = Math.round(totalPT - doNothing);
+      const profitHL = Math.round((totalHL - totalPaidHL) - (doNothing - cashPull)); 
+
+      document.getElementById('hometapProfit').textContent = '+$' + profitHT.toLocaleString();
+      document.getElementById('extraProfitHomeTap').textContent = '+$' + profitHT.toLocaleString();
+      
+      document.getElementById('pointProfit').textContent = '+$' + profitPT.toLocaleString();
+      document.getElementById('extraProfitPoint').textContent = '+$' + profitPT.toLocaleString();
+
+      document.getElementById('helocProfit').textContent = '+$' + profitHL.toLocaleString();
+      document.getElementById('extraProfitHeloc').textContent = '+$' + profitHL.toLocaleString();
 
       updateCharts(homeValue, homeRate, cashPull, target2036);
     }
@@ -259,6 +317,7 @@
       const doNothingData = years.map((_, i) => Math.round(homeValue * Math.pow(1 + homeRate, i)));
       const powerLawBtcData = years.map(year => getPowerLawBtcPrice(year, target2036));
 
+      // Hometap Data
       const hometapData = years.map((year, i) => {
         const futureHome = homeValue * Math.pow(1 + homeRate, i);
         const btcValue = (cashPull * 0.955 / currentBtcPrice) * powerLawBtcData[i];
@@ -266,13 +325,26 @@
           const hometapShare = futureHome * 0.40;
           return Math.round(futureHome - hometapShare + btcValue);
         }
-        return Math.round(futureHome + btcValue);
+        return Math.round(futureHome + btcValue); 
       });
 
+      // Point Data
+      const pointData = years.map((year, i) => {
+        const futureHome = homeValue * Math.pow(1 + homeRate, i);
+        const btcValue = (cashPull * 0.96 / currentBtcPrice) * powerLawBtcData[i];
+        if (year >= 2036) {
+          const pointStartingValue = homeValue * 0.90;
+          const pointPayment = cashPull + Math.max(0, (futureHome - pointStartingValue) * 0.40);
+          return Math.round(futureHome - pointPayment + btcValue);
+        }
+        return Math.round(futureHome + btcValue); 
+      });
+
+      // HELOC Data
       const helocData = years.map((year, i) => {
         const futureHome = homeValue * Math.pow(1 + homeRate, i);
         const btcValue = (cashPull / currentBtcPrice) * powerLawBtcData[i];
-        return Math.round(futureHome + btcValue);
+        return Math.round(futureHome + btcValue); 
       });
 
       if (lineChart) lineChart.destroy();
@@ -282,8 +354,9 @@
           labels: years,
           datasets: [
             { label: 'Do Nothing (Home Only)', data: doNothingData, borderColor: '#6b7280', tension: 0.3 },
-            { label: 'HomeTap + Bitcoin (Power Law)', data: hometapData, borderColor: '#10b981', tension: 0.3, borderDash: [2, 2] },
-            { label: 'HELOC + Bitcoin (Power Law)', data: helocData, borderColor: '#f59e0b', tension: 0.3 }
+            { label: 'HomeTap + BTC (Share of Value)', data: hometapData, borderColor: '#10b981', tension: 0.3, borderDash: [4, 4] },
+            { label: 'Point + BTC (Share of Appreciation)', data: pointData, borderColor: '#3b82f6', tension: 0.3, borderDash: [4, 4] },
+            { label: 'HELOC + BTC (Traditional Debt)', data: helocData, borderColor: '#f59e0b', tension: 0.3 }
           ]
         },
         options: {
@@ -292,7 +365,7 @@
           plugins: {
             legend: { 
               position: 'top',
-              labels: { font: { size: 13 } }
+              labels: { font: { size: 12 } }
             },
             annotation: {
               annotations: {
@@ -301,9 +374,9 @@
                   xMin: 2036,
                   xMax: 2036,
                   borderColor: '#ef4444',
-                  borderWidth: 3,
+                  borderWidth: 2,
                   borderDash: [6, 4],
-                  label: { content: 'End of 10-year term', enabled: true, position: 'top', backgroundColor: '#ef4444', color: '#fff' }
+                  label: { content: 'Settlement Year (10 Yrs)', enabled: true, position: 'top', backgroundColor: '#ef4444', color: '#fff' }
                 }
               }
             }
@@ -313,6 +386,7 @@
             y: { 
               ticks: { 
                 font: { size: 11 }, 
+                // Reverted formatting to show full comma-separated values instead of 'k' abbreviation
                 callback: v => '$' + v.toLocaleString() 
               } 
             }
@@ -350,6 +424,7 @@
     window.onload = () => {
       fetchBtcPrice();
       updateThemeButton();
+      setTimeout(calculateAndUpdate, 500); 
     };
   </script>
 </body>
